@@ -51,16 +51,50 @@ GROUP BY o."userId",
 ORDER BY o."userId"
   /**/
 SELECT count(pto."orderId") AS "Number of Position in order",
-  o.id
-FROM orders AS o
-  JOIN "phones_to_orders" AS pto ON o.id = pto."orderId"
-GROUP BY o.id
+  pto."orderId"
+FROM "phones_to_orders" AS pto
+GROUP BY pto."orderId"
   /**/
 SELECT sum(pto."quantity") AS "Number of phones what was add to order",
-  p."model", p."brand"
+  p."model",
+  p."brand"
 FROM orders AS o
   JOIN "phones_to_orders" AS pto On o.id = pto."orderId"
   JOIN "phones" AS p ON pto."phoneId" = p.id
-GROUP BY p."model", p."brand"
+GROUP BY p."model",
+  p."brand"
 ORDER BY p."model"
 LIMIT 1
+  /**/
+SELECT *
+FROM "phones_to_orders" AS pto
+  JOIN phones AS p On pto."phoneId" = p.id
+WHERE p.id = 37
+  /**/
+
+  /**/
+SELECT sum(pto."quantity" * p."price"),
+  o.id
+FROM orders AS o
+  JOIN "phones_to_orders" AS pto ON o.id = pto."orderId"
+  JOIN "phones" AS p ON p.id = pto."phoneId"
+GROUP BY o.id
+ORDER BY sum(pto."quantity" * p."price") > avg(pto."quantity" * p."price")
+  /**/
+SELECT u.id,
+  concat(u."firstName", ' ', "lastName") as "FullName",
+  SELECT count(o.id)
+FROM "orders" AS o
+FROM "orders" AS o
+  JOIN "phones_to_orders" AS pto ON o.id = pto."orderId"
+  JOIN "users" AS u ON o."userId" = u.id
+GROUP BY u.id,
+  o.id
+  /**/
+SELECT count("pid"), "uid" FROM ( SELECT u.id as "uid", p.id AS "pid" FROM users AS u
+  JOIN orders AS o ON o."userId" = o.id
+  JOIN "phones_to_orders" AS pto ON o.id = pto."orderId"
+  JOIN "phones" AS p ON p.id = pto."phoneId"
+GROUP BY u.id,
+  p.id) AS "uid_with_pad"
+GROUP BY "uid"

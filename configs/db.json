@@ -3,5 +3,5 @@
   "password": "postgres",
   "host": "localhost",
   "port": 5432,
-  "database": "fe_friday"
+  "database": "Fe_test_db_one"
 }

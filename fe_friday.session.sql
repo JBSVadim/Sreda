@@ -24,7 +24,8 @@ CREATE TABLE "clients" (
   CREATE TABLE ordersD (
     id serial PRIMARY KEY,
     contractId int REFERENCES conctracts(id),
-    delivelyDate date PRIMARY KEY NOT NULL CHECK (delivelyDate > current_date)
+    delivelyDate date PRIMARY KEY NOT NULL CHECK (delivelyDate > current_date),
+    adress VARCHAR(300) NOT NULL CHECK (adress != '')
     );
   /*----------*/
   CREATE TABLE products(
